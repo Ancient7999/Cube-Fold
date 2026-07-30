@@ -1085,8 +1085,12 @@ display:flex;flex-direction:column;gap:12px;
 .theme-swatch{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;padding:0}
 .theme-swatch:hover{transform:scale(1.15);border-color:var(--accent-0)}
 .theme-swatch.active{border-color:var(--paper);box-shadow:0 0 0 2px var(--accent-0)}
-.theme-picker-controls{display:flex;gap:10px;justify-content:center;align-items:center}
+.theme-picker-controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
 .theme-picker-controls label{font-size:12px;color:var(--ink-soft);display:flex;flex-direction:column;align-items:center;gap:4px}
+.theme-mode-wrap{display:inline-flex;align-items:center;gap:6px}
+.theme-mode-wrap .mode-icon{color:var(--ink-soft);transition:color .25s ease,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.theme-mode-label:hover .mode-icon{color:var(--gold)}
+.theme-mode-label:hover .mode-icon:first-of-type{transform:rotate(90deg)}
 #themeCustomPicker{width:44px;height:28px;border:1.5px solid var(--line);border-radius:4px;cursor:pointer;background:none;padding:0}
 #themeHexInput{width:80px;padding:4px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:4px;color:var(--ink)}
 .theme-picker-strength{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink-soft)}
@@ -1421,14 +1425,6 @@ font-style: italic;
 <button class="settings-disclaimer-btn" id="settingsDisclaimer" aria-label="Disclaimer" title="Disclaimer">i</button>
 <span class="settings-disclaimer-text">disclaimer</span>
 </div>
-<div class="theme-switch-row">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-<label class="theme-switch">
-<input type="checkbox" id="themeToggleCheckbox">
-<span class="switch-slider"></span>
-</label>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-</div>
 <div class="settings-header">
 <span>Settings</span>
 </div>
@@ -1602,19 +1598,21 @@ font-style: italic;
 <button class="theme-swatch" data-hex="#1DC8D7" style="background:#1DC8D7; --preset-color:#1DC8D7;" title="Cyan" data-strength="99"></button>
 <button class="theme-swatch" data-hex="#FB00FF" style="background:#FB00FF; --preset-color:#FB00FF;" title="Magenta" data-strength="67"></button>
 <button class="theme-swatch" data-hex="#000000" style="background:#000000; --preset-color:#000000;" title="Obsidian" data-strength="90"></button>
-<button class="theme-swatch active" data-hex="#ff8800" style="background:#ff8800; --preset-color:#ff8800;" title="Amber" data-strength="62"></button>
+<button class="theme-swatch" data-hex="#ff8800" style="background:#ff8800; --preset-color:#ff8800;" title="Amber" data-strength="62"></button>
 <button class="theme-swatch" data-hex="#EB0000" style="background:#EB0000; --preset-color:#EB0000;" title="Red" data-strength="76"></button>
+<button class="theme-swatch active" data-hex="#FFFFFF" style="background:#FFFFFF; --preset-color:#FFFFFF;" title="White" data-strength="92"></button>
 </div>
 <div id="custom-presets-area" style="display:flex;gap:6px;align-items:center;margin-top:8px;"></div>
 <div class="theme-picker-controls">
-<label>Custom <input type="color" id="themeCustomPicker" value="#ff8800"></label>
-<label>Hex <input type="text" id="themeHexInput" maxlength="7" placeholder="#ff8800" value="#ff8800"></label>
+<label>Custom <input type="color" id="themeCustomPicker" value="#FFFFFF"></label>
+<label>Hex <input type="text" id="themeHexInput" maxlength="7" placeholder="#FFFFFF" value="#FFFFFF"></label>
+<label class="theme-mode-label">Mode <span class="theme-mode-wrap"><svg class="mode-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><span class="theme-switch"><input type="checkbox" id="themeToggleCheckbox"><span class="switch-slider"></span></span><svg class="mode-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span></label>
 </div>
 <div class="theme-picker-strength">
 <span>Subtle</span>
-<input type="range" id="themeStrengthSlider" min="0" max="100" value="62">
+<input type="range" id="themeStrengthSlider" min="0" max="100" value="92">
 <span>Vibrant</span>
-<div id="themeStrengthValue">62</div>
+<div id="themeStrengthValue">92</div>
 <button class="strength-lock-btn" id="strengthLockBtn" title="Lock Strength"><span style="display:inline-flex;align-items:center;justify-content:center;position:relative;isolation:isolate;width:1.2em;height:1.2em;vertical-align:middle;"><span class="strength-lock-bg" style="position:absolute;inset:0;border-radius:3px;"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:1.2em;height:1.2em;vertical-align:middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></span></button>
 </div>
 </div>
@@ -1922,7 +1920,7 @@ sPlus:4, sMul:4, sHash:4, sCross:4, sPct:2,
 wSun:4, wSnow:4,
 ptTarget:4, ptStar6:2, ptFlower:2,
 mdSun:4, mdLotus:2, mdStar8:4, mdChakra:4, mdDiamond:4,
-knCelticCross:4, knSquare:4, knStevedore:4, mdRainDrop: 2, g24a: 2, mE: 4, mH: 2, mI: 2, mK: 2, mM: 2, mO: 2, mP: 2, mR: 2, mS: 2, mT: 2,
+knCelticCross:4, knSquare:4, knStevedore:4, mdRainDrop: 2, g24a: 2, mE: 4, mH: 2, mI: 2, mK: 2, mM: 2, mO: 2, mP: 2, mR: 2, mS: 2, mT: 2, mX: 2,
 aExpand:4, aShuffle: 2, sAt: 2, foDonut: 2, foLeaf: 2, ptSpiral: 4, knTrefoil: 2,
 lH:2, sMinus:2, sDiv:2, sEq:2, sInfinity:2, mdEye:2, ptWaves:2, knFigure8:2
 };
@@ -2998,7 +2996,7 @@ return visibleSlots.map(k => {
 const token = cube[k];
 if (!token) return 'empty';
 let rot = token.rotation || 0;
-if (isCorrect && faceBySlot[k]) {
+if (faceBySlot[k]) {
 rot += getFaceInPlaneRotation(faceBySlot[k], k, puzzle.netFaceTransforms);
 }
 rot = ((Math.round(rot / 90) * 90) % 360 + 360) % 360;
@@ -3317,7 +3315,7 @@ btn.dataset.correct = choice.isCorrect ? '1' : '0';
 const slotsHTML = visibleSlots.map(slotKey => {
 const slot = CUBE_SLOTS[slotKey];
 const shape = choice.faces[slotKey];
-const extraRotate = getSlotExtraRotate(puzzle, slotKey, choice.isCorrect);
+const extraRotate = getSlotExtraRotate(puzzle, slotKey, true);
 return `<div class="corner-face" style="transform:${slot.cssTransform}${extraRotate};background:${SLOT_BG[slotKey]}"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="transform:rotate(${shape.rotation||0}deg) ${shape.flip ? 'scaleX(-1)' : ''};">${shape.svg}</svg></div>`;
 }).join('');
 const isCovered = !state.settings.disableMystery && (i===coveredIdx);
@@ -4719,7 +4717,7 @@ closeThemePicker();
 updateHud('gamepad');
 } else {
 let cpNavigated = false;
-const cpItems = Array.from(cpPanel.querySelectorAll('.theme-swatch, .custom-add-btn, .custom-preset-lock, .custom-preset-del, .strength-lock-btn, #themeCustomPicker, #themeHexInput, #themeStrengthSlider')).filter(el => el.offsetParent !== null);
+const cpItems = Array.from(cpPanel.querySelectorAll('.theme-swatch, .custom-add-btn, .custom-preset-lock, .custom-preset-del, .strength-lock-btn, #themeCustomPicker, #themeHexInput, #themeStrengthSlider, #themeToggleCheckbox')).filter(el => el.offsetParent !== null);
 if (typeof state.cpHighlightIndex === 'undefined' || state.cpHighlightIndex >= cpItems.length) state.cpHighlightIndex = 0;
 if (btn[s.btnUp]?.pressed === true && !lastGamepadState.up) { state.cpHighlightIndex = Math.max(0, state.cpHighlightIndex - 1); cpNavigated = true; }
 if (btn[s.btnDown]?.pressed === true && !lastGamepadState.down) { state.cpHighlightIndex = Math.min(cpItems.length - 1, state.cpHighlightIndex + 1); cpNavigated = true; }
@@ -5360,10 +5358,11 @@ localStorage.setItem('cubeFoldTheme', 'light');
 if (window.refreshTheme) window.refreshTheme();
 });
 const APP_INFO = {
-version: '0.25b',
-revisionDate: '12/07/2026',
+version: '0.26b',
+revisionDate: '30/07/2026',
 changelog: [
-"Beta release."
+"Fixed a rotation logic that lead to a correct distractor.",
+"Changed default theme to neutral colors and moved light/dark toggle from settings menu to the theme interface."
 ]
 };
 const versionFooterEl = document.getElementById('version-footer');
@@ -5924,7 +5923,7 @@ if(this._resizeHandler) window.removeEventListener('resize',this._resizeHandler)
 }
 };
 const resolvedTheme = localStorage.getItem('cubeFoldTheme');
-const isDark = resolvedTheme ? resolvedTheme === 'dark' : true;
+const isDark = resolvedTheme ? resolvedTheme === 'dark' : false;
 if (isDark) {
 document.documentElement.setAttribute('data-theme', 'dark');
 themeCheckbox.checked = true;
@@ -6377,8 +6376,8 @@ try { localStorage.setItem('cubeFoldStrengthLocked', _strengthLocked ? '1' : '0'
 function loadThemePrefs() {
 let savedHex = localStorage.getItem('cubeFoldAccentHex');
 let savedStr = localStorage.getItem('cubeFoldAccentStrength');
-customPicker.value = savedHex || '#ff8800';
-strengthSlider.value = _strengthLocked ? _lockedStrength : (savedStr || 62);
+customPicker.value = savedHex || '#FFFFFF';
+strengthSlider.value = _strengthLocked ? _lockedStrength : (savedStr || 92);
 _activePresetType = 'standard';
 updateUI();
 syncAllPresetHighlights();
