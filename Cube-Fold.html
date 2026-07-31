@@ -1625,10 +1625,11 @@ font-style: italic;
 </main>
 <script>
 const GAME_KEYS = new Set([
-'w', 'a', 's', 'd', 'q', 'e', 'z', 'x',
-'1', '2', '3', '4', '5', '6',
-'enter', 'escape', ' ',
-'arrowup', 'arrowdown', 'arrowleft', 'arrowright'
+'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'KeyZ', 'KeyX', 'KeyY',
+'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6',
+'Numpad1', 'Numpad2', 'Numpad3', 'Numpad4', 'Numpad5', 'Numpad6',
+'Enter', 'NumpadEnter', 'Escape', 'Space',
+'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'
 ]);
 const NUMPAD_CODES = new Set(['Numpad1','Numpad2','Numpad3','Numpad4','Numpad5','Numpad6']);
 const MOBILE_BREAKPOINT = 900;
@@ -4076,14 +4077,14 @@ wheelAnimId = requestAnimationFrame(wheelAnimLoop);
 setupWheelSpin();
 window.addEventListener('keydown', e => {
 if (e.ctrlKey || e.metaKey || e.altKey) return;
-if (!GAME_KEYS.has(e.key.toLowerCase())) return;
+if (!GAME_KEYS.has(e.code)) return;
 const activeEl = document.activeElement;
 if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) return;
-state.keys[e.key.toLowerCase()] = true;
+state.keys[e.code] = true;
 });
 window.addEventListener('keyup', e => {
-if (!e.key) return;
-state.keys[e.key.toLowerCase()] = false;
+if (!e.code) return;
+state.keys[e.code] = false;
 });
 function snapCursorTo(el) {
 if (!el) return;
@@ -4125,21 +4126,20 @@ if (dir === 'right') { newIdx = (baseIdx + halfC) % numC; }
 if (newIdx >= 0) {
 applyChoiceHover(newIdx);
 }
-}
-document.addEventListener('keydown', e => {
+}document.addEventListener('keydown', e => {
 if (e.ctrlKey || e.metaKey || e.altKey) return;
-if (!GAME_KEYS.has(e.key.toLowerCase())) return;
+if (!GAME_KEYS.has(e.code)) return;
 const activeEl = document.activeElement;
 if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
 const type = activeEl.type;
 if (type === 'text' || type === 'number' || type === 'color' || activeEl.tagName === 'TEXTAREA') {
-if (e.key === 'Escape' || e.key === 'Enter') activeEl.blur();
+if (e.code === 'Escape' || e.code === 'Enter' || e.code === 'NumpadEnter') activeEl.blur();
 return;
 }
 }
 const infoModalActive = infoModal && infoModal.classList.contains('active');
 if (infoModalActive) {
-if (e.key === 'Enter' || e.key === ' ') {
+if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.code === 'Space') {
 closeInfoModal();
 }
 return;
@@ -4148,13 +4148,13 @@ updateHud('kb');
 const cpPanel = document.getElementById('themePickerPanel');
 const cpOpen = cpPanel && cpPanel.classList.contains('open');
 if (state.menuActive) {
-if (e.key === 'Escape') {
+if (e.code === 'Escape') {
 closeMenu();
-} else if (e.key === 'ArrowUp') {
+} else if (e.code === 'ArrowUp') {
 state.menuHighlightIndex = Math.max(-1, state.menuHighlightIndex - 1);
 updateMenuHighlight();
 syncMenuCursor();
-} else if (e.key === 'ArrowDown') {
+} else if (e.code === 'ArrowDown') {
 const rows = getMenuRows();
 let nextIdx = state.menuHighlightIndex + 1;
 if (state.menuHighlightIndex === -1) {
@@ -4164,37 +4164,39 @@ if (firstSettingIdx !== -1) nextIdx = firstSettingIdx;
 state.menuHighlightIndex = Math.min(rows.length - 1, nextIdx);
 updateMenuHighlight();
 syncMenuCursor();
-} else if (e.key === 'ArrowLeft') {
+} else if (e.code === 'ArrowLeft') {
 triggerMenuAction('left');
 syncMenuCursor();
-} else if (e.key === 'ArrowRight') {
+} else if (e.code === 'ArrowRight') {
 triggerMenuAction('right');
 syncMenuCursor();
-} else if (e.key === 'Enter') {
+} else if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 triggerMenuAction('a');
 syncMenuCursor();
 }
 return;
 }
-if(e.key === 'Enter'){
+if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 const btn = document.getElementById('actionBtn');
 if(!btn.disabled) btn.click();
-const isNum = ['1','2','3','4','5','6'].includes(e.key) || NUMPAD_CODES.has(e.code);
+} else if (/^(Digit|Numpad)[1-6]$/.test(e.code)) {
 if (cpOpen) return;
-const match = e.key.match(/[1-6]/) || e.code.match(/[1-6]/);
-const idx = parseInt(match[0]) - 1;
+const idx = parseInt(e.code.slice(-1)) - 1;
 if(!state.answered) onChoiceClick(idx);
-} else if (e.key.toLowerCase() === 'z') {
+} else if (e.code === 'KeyZ') {
 if (cpOpen) return;
-if (!state.menuActive && !state.answered) stepFold();
-} else if (e.key.toLowerCase() === 'x') {
+if (!state.menuActive) stepFold();
+} else if (e.code === 'KeyX') {
 if (cpOpen) return;
-if (!state.menuActive && !state.answered) stepUnfold();
-} else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+if (!state.menuActive) stepUnfold();
+} else if (e.code === 'KeyY') {
+if (cpOpen) return;
+if (!state.menuActive) resetView();
+} else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
 if (state.menuActive || cpOpen || state.answered) return;
 e.preventDefault();
 const dirMap = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
-navigateChoices(dirMap[e.key]);
+navigateChoices(dirMap[e.code]);
 }
 });
 const SLOT_ADJACENCY = {
@@ -4643,8 +4645,8 @@ handleGamepadHover(el);
 }
 const spinUp = btn[s.spinUpBtn]?.pressed || false;
 const spinDown = btn[s.spinDownBtn]?.pressed || false;
-const kbSpinUp = (!state.menuActive && !cpOpen) ? (state.keys['e']|| false) : false;
-const kbSpinDown = (!state.menuActive && !cpOpen) ? (state.keys['q']|| false) : false;
+const kbSpinUp = (!state.menuActive && !cpOpen) ? (state.keys['KeyE']|| false) : false;
+const kbSpinDown = (!state.menuActive && !cpOpen) ? (state.keys['KeyQ']|| false) : false;
 const allowSpin = !TutorialManager.isActive || TutorialManager.isUnlocked('rotate');
 if (!state.remappingSlot && allowSpin && !infoModalActive && (spinUp || spinDown || kbSpinUp || kbSpinDown)) {
 updateHud((kbSpinUp || kbSpinDown) ? 'kb' : 'gamepad');
@@ -4672,10 +4674,10 @@ let camX = Math.abs(rX) > GAMEPAD_DEADZONE ? rX : 0;
 let camY = Math.abs(rY) > GAMEPAD_DEADZONE ? rY : 0;
 let camSource = (camX || camY) ? 'gamepad' : null;
 if (!state.menuActive && !cpOpen && !infoModalActive) {
-if (state.keys['a']) { camX = -1; camSource = 'kb'; }
-if (state.keys['d']) { camX = 1; camSource = 'kb'; }
-if (state.keys['w']) { camY = -1; camSource = 'kb'; }
-if (state.keys['s']) { camY = 1; camSource = 'kb'; }
+if (state.keys['KeyA']) { camX = -1; camSource = 'kb'; }
+if (state.keys['KeyD']) { camX = 1; camSource = 'kb'; }
+if (state.keys['KeyW']) { camY = -1; camSource = 'kb'; }
+if (state.keys['KeyS']) { camY = 1; camSource = 'kb'; }
 }
 if(TutorialManager.isActive && !TutorialManager.isUnlocked('rotate')){camX=0;camY=0;}
 if (state.settings.invertXController) camX *= -1;
@@ -5358,11 +5360,12 @@ localStorage.setItem('cubeFoldTheme', 'light');
 if (window.refreshTheme) window.refreshTheme();
 });
 const APP_INFO = {
-version: '0.26b',
-revisionDate: '30/07/2026',
+version: '0.27',
+revisionDate: '31/07/2026',
 changelog: [
-"Fixed a rotation logic that lead to a correct distractor.",
-"Changed default theme to neutral colors and moved light/dark toggle from settings menu to the theme interface."
+"Shortcuts fixes to 1-6 numbers and Z/X fold buttons.",
+"Keystrokes now support different input language settings.",
+"Y Keyboard button now resets view."
 ]
 };
 const versionFooterEl = document.getElementById('version-footer');
@@ -5541,13 +5544,13 @@ const modal=document.getElementById('tutorial-modal');
 if(modal&&modal.contains(e.target)) return;
 if(e.type==='keydown'){
 if (e.ctrlKey || e.metaKey || e.altKey) return;
-if (!GAME_KEYS.has(e.key.toLowerCase())) return;
-const isNum = ['1','2','3','4','5','6'].includes(e.key) || ['Numpad1','Numpad2','Numpad3','Numpad4','Numpad5','Numpad6'].includes(e.code);
+if (!GAME_KEYS.has(e.code)) return;
+const isNum = /^(Digit|Numpad)[1-6]$/.test(e.code);
 if(TutorialManager.isUnlocked('select') && isNum) return;
-if(TutorialManager.isUnlocked('fold')&&(e.key===' '||e.key==='Enter')) return;
-if(TutorialManager.isUnlocked('select')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) return;
-const gameKeys=['Enter',' ','1','2','3','4','5','6','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
-const isGameKey = gameKeys.includes(e.key) || NUMPAD_CODES.has(e.code);
+if(TutorialManager.isUnlocked('fold')&&(e.code==='Space'||e.code==='Enter'||e.code==='NumpadEnter')) return;
+if(TutorialManager.isUnlocked('select')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) return;
+const gameCodes=['Enter','NumpadEnter','Space','Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Numpad1','Numpad2','Numpad3','Numpad4','Numpad5','Numpad6','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+const isGameKey = gameCodes.includes(e.code);
 if(!isGameKey) return;
 e.stopImmediatePropagation();
 e.preventDefault();
