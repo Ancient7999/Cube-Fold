@@ -248,7 +248,7 @@ z-index:0;
 }
 .stage-body{
 display:grid;
-grid-template-columns:minmax(160px, 320px) 1fr minmax(160px, 320px);
+grid-template-columns:minmax(160px, 22vmin) minmax(0, 1fr) minmax(160px, 22vmin);
 gap:clamp(8px,1.5vw,20px);
 align-items:stretch;
 min-height:0;
@@ -281,10 +281,7 @@ order:1;
 }
 html.is-mobile {
 .stage-meta{
-position:static;
-margin:4px 0;
-pointer-events:none;
-text-align:left;
+display:none !important;
 }
 }
 .stage-head .stage-reset-btn{
@@ -318,15 +315,18 @@ border-color:var(--gold);
 box-shadow:0 0 14px rgba(var(--accent-6-rgb),.5);
 background:rgba(var(--accent-6-rgb),.08);
 }
-.scene{position:relative;z-index:1;flex:1;min-height:0;display:grid;place-items:center;perspective:1400px;perspective-origin:50% 50%;padding:clamp(6px,1vh,18px) 0;overflow:hidden;isolation:isolate;}
+.scene{position:relative;z-index:1;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;perspective:1400px;perspective-origin:50% 50%;padding:0;overflow:visible;isolation:isolate;}
 .scene-rotate{
 transform-style:preserve-3d;
 will-change:transform;
 width:100%;
 height:100%;
-display:grid;
-place-items:center;
+display:flex;
+align-items:center;
+justify-content:center;
 transform:translate3d(0,0,0);
+margin:0;
+overflow:visible;
 }
 .scene .scene-reset-btn{position:absolute;top:16px;right:16px;z-index:15;display:none;pointer-events:auto}
 .scene .scene-reset-btn.visible{display:block}
@@ -372,6 +372,7 @@ width:160px;height:160px;
 transform-style:preserve-3d;
 transition:opacity 0.4s ease;
 transform-origin:50% 50%;
+overflow:visible;
 }
 .face{
 position:absolute;
@@ -423,7 +424,7 @@ filter: brightness(0.5);
 /* =================== Choices =================== */
 .stage-body{
 display:grid;
-grid-template-columns:minmax(160px, 320px) 1fr minmax(160px, 320px);
+grid-template-columns:minmax(160px, 22vmin) minmax(0, 1fr) minmax(160px, 22vmin);
 gap:clamp(8px,1.5vw,20px);
 align-items:stretch;
 min-height:0;
@@ -433,6 +434,9 @@ display:flex;
 flex-direction:column;
 gap:clamp(4px,1dvh,14px);
 min-height:0;
+height:100%;
+position:relative;
+z-index:2;
 }
 .choice{
 background:transparent;
@@ -447,6 +451,8 @@ overflow:hidden;
 aspect-ratio:1;display:flex;flex-direction:column;
 isolation:isolate;
 --trace-speed:10s;
+flex:1 1 0;
+min-height:0;
 }
 .choice::before{
 content:"";position:absolute;inset:0;
@@ -544,7 +550,7 @@ color:var(--error);
 .choice.disabled{cursor:default}
 .choice.disabled:hover{transform:none;box-shadow:var(--shadow)}
 .choice.selected.wrong{box-shadow:4px 7px 0 var(--error)}
-@media (min-width: 901px) and (max-width: 1380px) {
+@media (min-width: 901px) and (max-width: 1000px) {
 .stage-body {
 grid-template-columns: 1fr;
 }
@@ -575,18 +581,12 @@ flex: none;
 aspect-ratio: 1;
 width: 140px;
 }
+.scene {
+padding-left: 160px;
+padding-right: 160px;
+}
 .scene-rotate {
-margin-left: calc((100vw - 1380px) * 0.25);
-}
-.stage[data-net="unnamed 1"] .scene-rotate,
-.stage[data-net="unnamed 3"] .scene-rotate,
-.stage[data-net="unnamed 4"] .scene-rotate,
-.stage[data-net="unnamed 5"] .scene-rotate,
-.stage[data-net="T-shape"] .scene-rotate {
-margin-left: calc((100vw - 1380px) * 0.5);
-}
-.stage[data-net="unnamed 6"] .scene-rotate {
-margin-left: 0;
+--scale-factor: 0.6;
 }
 }
 /* =================== Footer / actions =================== */
@@ -822,6 +822,7 @@ border:none;box-shadow:2px 2px 0 var(--accent);
 .btn.next{background:var(--success);box-shadow:3px 3px 0 #1B140C}
 .btn.next:hover{box-shadow:5px 5px 0 #1B140C}
 .footer-toggle,.header-toggle{display:none}
+#actionBtn{min-width:160px;justify-content:center}
 .controls-hud{position:relative;bottom:auto;right:auto;z-index:10;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);pointer-events:none;opacity:.8;text-align:right;line-height:1.4;margin-top:-16px;width:100%;}
 @keyframes shake{
 0%,100%{transform:translateX(0)}
@@ -894,14 +895,13 @@ margin:0;
 background:var(--paper);
 border:1.5px solid var(--line);
 box-shadow:var(--shadow);
+width:24px;height:24px;min-width:24px;min-height:24px;
 }
 .stage-head .stage-reset-btn.visible{opacity:1;}
 .stage-body{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;align-items:stretch}
 .scene{padding:4px 0;display:flex;align-items:center;justify-content:center;flex:1 1 40%;min-height:0;position:relative;z-index:10;overflow:hidden}
-.scene-rotate{margin:auto}
-.cube-wrap{margin:auto}
-.choices-col{flex-direction:row;gap:8px;justify-content:center;align-items:center;width:100%;flex:0 1 auto}
-.choices-col .choice{padding:4px;aspect-ratio:1;flex:0 1 auto;min-height:0;display:flex;flex-direction:column;min-width:0;max-width:110px;max-height:110px;width:100%;}
+.choices-col{flex-direction:row;gap:8px;justify-content:space-between;align-items:center;width:100%;flex:0 0 auto;height:auto;padding:0 4px;box-sizing:border-box}
+.choices-col .choice{padding:4px;aspect-ratio:1;flex:0 0 min(140px, calc((100% - 16px) / 3));min-height:0;display:flex;flex-direction:column;min-width:0;max-width:none}
 .choice .label{font-size:14px;top:6px;left:8px}
 .choice .badge{font-size:9px;top:6px;right:8px;display:block}
 .mystery-info{top:4px;right:4px;width:18px;height:18px;font-size:11px}
@@ -1342,6 +1342,22 @@ color: var(--ink);
 margin: 0;
 font-weight: 500;
 font-style: italic;
+}
+@media (min-width: 901px) and (max-height: 700px){
+.app{gap:clamp(4px,0.5dvh,10px)}
+header.bar{min-height:48px;padding:clamp(4px,0.5vh,8px) clamp(10px,1.5vw,22px)}
+.brand-text h1{font-size:16px}
+.brand-text .sub{font-size:8px}
+.stat b{font-size:13px}
+.stage-q{font-size:14px}
+.feedback{font-size:11px;padding-bottom:2px;margin-bottom:0}
+footer.actions{min-height:auto;padding:4px clamp(8px,1vw,14px);gap:6px}
+.btn{font-size:11px;padding:6px 12px;box-shadow:2px 2px 0 var(--line)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--line)}
+.dropdown-trigger{min-width:110px}
+.theme-picker-btn,.settings-btn{padding:0;width:32px;height:32px;font-size:15px}
+.theme-picker-btn svg{width:15px;height:15px}
+.controls-hud{margin-top:0}
 }
 </style>
 </head>
@@ -2311,6 +2327,15 @@ const foldedCX = rootLeft + size/2 + (state.cubeCenterOffsetX||0);
 const foldedCY = rootTop + size/2 + (state.cubeCenterOffsetY||0);
 state.cubeShiftX = netW/2 - foldedCX;
 state.cubeShiftY = netH/2 - foldedCY;
+let flatCX = 0, flatCY = 0;
+for (const k in pos) {
+flatCX += pos[k].x * size + size/2;
+flatCY += pos[k].y * size + size/2;
+}
+flatCX /= 6;
+flatCY /= 6;
+state.flatCenterX = flatCX - minX;
+state.flatCenterY = flatCY - minY;
 const wrap = document.getElementById('cubeWrap');
 wrap.style.width = netW + 'px';
 wrap.style.height = netH + 'px';
@@ -2502,8 +2527,12 @@ const sceneCube = document.getElementById('sceneCube');
 const sr = document.getElementById('sceneRotate');
 updateScale();
 const frac = state.displayFoldFrac;
-const tx = (state.cubeShiftX || 0) * frac;
-const ty = (state.cubeShiftY || 0) * frac;
+const flatShiftX = (state.netW / 2) - (state.flatCenterX || 0);
+const flatShiftY = (state.netH / 2) - (state.flatCenterY || 0);
+const foldedShiftX = state.cubeShiftX || 0;
+const foldedShiftY = state.cubeShiftY || 0;
+const tx = flatShiftX * (1 - frac) + foldedShiftX * frac;
+const ty = flatShiftY * (1 - frac) + foldedShiftY * frac;
 const tz = 0;
 let wrapTf = '';
 if(state.netFlatRotation) wrapTf += `rotateZ(${state.netFlatRotation}deg) `;
@@ -2542,7 +2571,10 @@ const nw = state.netW, nh = state.netH;
 let flatW = nw, flatH = nh;
 const rot = ((state.netFlatRotation % 360) + 360) % 360;
 if (rot === 90 || rot === 270) { flatW = nh; flatH = nw; }
-const scale = Math.min(availW / flatW, availH / flatH) * 0.8;
+const scaleFactor = parseFloat(getComputedStyle(sr).getPropertyValue('--scale-factor')) || 1;
+const isMobile = window.matchMedia(MOBILE_MEDIA_QUERY).matches;
+const mobileScale = isMobile ? (window.innerWidth < 400 ? 0.65 : 0.75) : 0.72;
+const scale = Math.min(availW / flatW, availH / flatH) * mobileScale * scaleFactor;
 sr.style.setProperty('--scale', Math.max(0.1, scale));
 scene.style.height = '';
 scene.style.flex = '1';
@@ -3233,7 +3265,7 @@ puzzle.choices = shuffle([
 }
 function renderNet(puzzle){
 const net = state.currentNetConfig;
-const faceSize = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? 70 : 160;
+const faceSize = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? 100 : 160;
 const els = buildNetHTML(net, faceSize);
 const wrap = document.getElementById('cubeWrap');
 const prevTransition = wrap.style.transition;
@@ -3416,7 +3448,7 @@ else stageHead.appendChild(metaEl);
 }
 const { transforms, centroid } = faceTransformOnCube(state.currentNetConfig);
 state.netFaceTransforms = transforms;
-const faceSize = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? 70 : 160;
+const faceSize = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? 100 : 160;
 state.cubeCenterOffsetX = centroid[0] * faceSize;
 state.cubeCenterOffsetY = centroid[1] * faceSize;
 state.cubeCenterOffsetZ = centroid[2] * faceSize;
@@ -4262,7 +4294,7 @@ cubeWrap.offsetHeight;
 cubeWrap.style.transition = '';
 }
 function renderSceneCube(puzzle){
-const faceSize=window.matchMedia(MOBILE_MEDIA_QUERY).matches?70:160;
+const faceSize=window.matchMedia(MOBILE_MEDIA_QUERY).matches?100:160;
 const half=faceSize/2;
 const slotTransforms={
 pZ:`translateZ(${half}px)`,
@@ -5360,12 +5392,10 @@ localStorage.setItem('cubeFoldTheme', 'light');
 if (window.refreshTheme) window.refreshTheme();
 });
 const APP_INFO = {
-version: '0.27',
+version: '0.28',
 revisionDate: '31/07/2026',
 changelog: [
-"Shortcuts fixes to 1-6 numbers and Z/X fold buttons.",
-"Keystrokes now support different input language settings.",
-"Y Keyboard button now resets view."
+"Layout fixes to various resolutions across devices."
 ]
 };
 const versionFooterEl = document.getElementById('version-footer');
